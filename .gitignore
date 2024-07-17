@@ -5,10 +5,10 @@ __pycache__/
 *.sqlite3
 
 # Static files
-/static/
+static/
 
 # Media files
-/media/
+media/
 
 # Environment variables
 .env
