@@ -1,0 +1,89 @@
+<!-- extend base.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+BCA | Home
+{% endblock %}
+{% block home %}active{% endblock %}
+{% block body %}
+{% if banner_image %}
+<img src="{{banner_image.image.url}}" alt="" style="width: 100%; max-height: 60vh;" class="img-fluid" height="">
+{% else %}
+<div class="text-center">
+  <h5 class="text-center">No Banner Image Added</h5>
+</div>
+{% endif %}
+<div class="my-2 container-fluid">
+  <div class="row">
+
+    <!-- top 3 notices -->
+    <div class="col-md-8 py-2">
+      <p class="text-center h2">
+        Latest Notice
+      </p>
+      <!-- actual notice starts from here -->
+      {% if notices %}
+      {% for notice in notices %}
+      <div class="bg-light rounded my-4 shadow">
+        <div class="row align-items-center p-3">
+          <div class="col-md-10">
+            <p class="">
+              {{notice.title}}
+            </p>
+            <span class="text-muted"><i class="bi bi-calendar-event mx-3"></i>
+              {{notice.date|date:"d M Y"}}</span>
+            </span>
+            {% if notice.file %}
+            <a href="{{notice.file.url}}" downlaod class="text-decoration-none text-dark mx-5"><i
+                class="bi bi-download mx-3"></i></a>
+            {% endif %}
+          </div>
+          <div class="col-md-2">
+            {% if notice.file %}
+            <a href="{{notice.file.url}}" target="_blank" class="text-decoration-none btn btn-outline-dark">
+              <span class="">Read More</span>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p class="text-center text-danger">
+        No Notice Found
+      </p>
+      {% endif %}
+      <!-- actual notice ends -->
+
+    </div>
+
+    <!-- HOD messaeg -->
+    <div class="col-md-4 py-2">
+      {% if hodmessage %}
+      <div class="card p-3 shadow bg-light">
+        <p class="text-center lead border-bottom">
+          Message from Head Of Department
+        </p>
+        <p class="text-center">
+          <img src="{{ hodmessage.photo.url }}" style="max-height: 200px;" alt="HOD Image" class="img-fluid rounded"
+            srcset="">
+        </p>
+        <p class="text-center font-weight-bold">
+          {{hodmessage.name}}
+        </p>
+        <p class="text-clamp-4">
+          {{hodmessage.message}}
+        </p>
+        <a href="{% url 'message' id=hodmessage.id %}" class=" text-secondary">Read more</a>
+      </div>
+      {% else %}
+      <p class="text-center text-danger">
+        No HOD Message Found
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

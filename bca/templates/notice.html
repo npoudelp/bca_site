@@ -1,0 +1,59 @@
+<!-- extend base.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+BCA | Notice
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-3">
+
+  <div class="d-flex justify-content-center">
+    <table>
+      <tr>
+        <td><input type="text" placeholder="Search for notice..." name="key" id="key"></td>
+        <td class="">
+          <input type="button" class="mx-2 filter-btn" id="filter" onclick="notice_filter()" value="Search">
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="container">
+    {% for notice in notices %}
+    <div class="bg-light rounded my-4 shadow">
+      <div class="row align-items-center p-3">
+        <div class="col-md-10">
+          <p class="text-clamp-2">
+            {{notice.title}}
+          </p>
+          <span class="text-muted"><i class="bi bi-calendar-event mx-3"></i>
+            {{notice.date|date:"d M Y"}}</span>
+          </span>
+          {% if notice.file %}
+          <a href="{{notice.file.url}}" downlaod class="text-decoration-none text-dark mx-5"><i
+              class="bi bi-download mx-3"></i></a>
+          {% endif %}
+        </div>
+        <div class="col-md-2">
+          {% if notice.file %}
+          <a href="{{notice.file.url}}" target="_blank" class="text-decoration-none btn btn-outline-dark">
+            <span class="">Read More</span>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+
+<script>
+  notice_filter = () => {
+    let key = $("#key").val();
+    window.location.href = "{% url 'notice_filter' key=1234 %}".replace(/1234/, key.toString());
+  }
+</script>
+{% endblock %}

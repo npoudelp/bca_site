@@ -1,0 +1,95 @@
+<!-- extend base.html -->
+{% extends 'admin/admin_base.html' %}
+{%load crispy_forms_tags%}
+{% block title %}
+Admin | Notice
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-3">
+
+  <div class="d-flex justify-content-center">
+    <table>
+      <tr>
+        <td><input type="text" placeholder="Search for notice..." name="key" id="key"></td>
+        <td class="">
+          <input type="button" class="mx-2 filter-btn" id="filter" onclick="notice_filter()" value="Search">
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4" id="form_holder">
+      <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if notice_form %}
+        {{notice_form|crispy}}
+
+        <button type="submit" class="btn btn-dark my-3">Publish</button>
+        {% endif %}
+
+        {% if notice_form_edit %}
+        {{notice_form_edit|crispy}}
+
+        <button type="submit" class="btn btn-dark my-3">Update</button>
+        {% endif %}
+      </form>
+    </div>
+    <div class="col-md-8" id="notice_holder">
+
+      {% for notice in notices %}
+      <div class="bg-light rounded my-4 shadow">
+        <div class="row align-items-center p-3">
+          <div class="col-md-10">
+            <p class="">
+              {{notice.title}}
+            </p>
+            <span class="text-muted"><i class="bi bi-calendar-event mx-3"></i>
+              {{notice.date|date:"d M Y"}}</span>
+            </span>
+            <span class="text-danger mx-5" onclick="delete_notice('{{notice.id}}')"><i
+                class="bi bi-trash mx-3"></i></span>
+            <span class="text-dark" onclick="edit_notice('{{notice.id}}')"><i class="bi bi-pencil"></i></span>
+          </div>
+          <div class="col-md-2">
+
+            {% if notice.file %}
+            <a href="{{notice.file.url}}" target="_blank" class="text-decoration-none btn btn-outline-dark">
+              <span class="">Read More</span>
+            </a>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+<script>
+  delete_notice = (id) => {
+    if (confirm("Are you sure you want to delete this notice?")) {
+      window.location.href = "{% url 'admin_notice_delete' id=1234 %}".replace(/1234/, id.toString());
+    }
+  }
+
+  edit_notice = (id) => {
+    window.location.href = "{% url 'admin_notice_edit' id=1234 %}".replace(/1234/, id.toString());
+  }
+
+  notice_filter = () => {
+    let key = $("#key").val();
+    window.location.href = "{% url 'admin_notice_filter' key=1234 %}".replace(/1234/, key.toString());
+  }
+
+  $("#key").keypress(function (e) {
+    if(e.keyCode == 13){
+      notice_filter();
+    }
+  });
+
+</script>
+{% endblock %}

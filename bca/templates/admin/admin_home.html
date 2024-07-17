@@ -1,0 +1,101 @@
+<!-- extend base.html -->
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+{%load crispy_forms_tags%}
+
+{% block title %}
+Admin | Home
+{% endblock %}
+
+{% block body %}
+<div class="border">
+    {% if bannerimage %}
+    <img src="{{bannerimage.image.url}}" alt="" style="width: 100%; max-height: 60vh;" class="img-fluid" height="">
+    <span onclick="update_banner_image('{{bannerimage.id}}')" class="text-dark text-decoration-none mx-5">
+        <i class="bi bi-pencil"></i>
+    </span>
+    {% else %}
+    <div class="text-center">
+        <h5 class="text-center">No Banner Image</h5>
+    </div>
+    {% endif %}
+    {% if bannerimage_form %}
+    <span class="lead">Banner image form</span>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{bannerimage_form|crispy}}
+        <button type="submit" class="btn btn-dark my-3">Publish</button>
+    </form>
+    {% endif %}
+
+    {% if bannerimage_form_edit %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{bannerimage_form_edit|crispy}}
+        <button type="submit" class="btn btn-dark my-3">Update</button>
+    </form>
+    {% endif %}
+
+
+</div>
+
+<div class="my-2 container-fluid">
+    <div class="row">
+        <div class="col-md-8 py-2">
+            {% if hodmessage_form or hodmessage_form_edit %}
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if hodmessage_form %}
+                <span class="lead">HOD message entry form</span>
+                {{hodmessage_form|crispy}}
+
+                <button type="submit" class="btn btn-dark my-3">Publish</button>
+                {% endif %}
+
+                {% if hodmessage_form_edit %}
+                {{hodmessage_form_edit|crispy}}
+
+                <button type="submit" class="btn btn-dark my-3">Update</button>
+                {% endif %}
+            </form>
+            {% endif %}
+        </div>
+
+        <!-- HOD messaeg -->
+        <div class="col-md-4 py-2">
+            {% if hodmessage %}
+            <div class="card p-3 shadow bg-light">
+                <p class="text-center lead border-bottom">
+                    Message from Head Of Department
+                </p>
+                <p class="text-center">
+                    <img src="{{ hodmessage.photo.url }}" style="max-height: 200px;" alt="HOD Image"
+                        class="img-fluid rounded" srcset="">
+                </p>
+                <p class="text-center font-weight-bold border-bottom">
+                    {{hodmessage.name}}
+                </p>
+                <p class="">
+                    {{ hodmessage.message }}
+                </p>
+                <span onclick="update_hod_message('{{hodmessage.id}}')" class="text-dark text-decoration-none">
+                    <i class="bi bi-pencil"></i>
+                </span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    update_hod_message = (id) => {
+        window.location.href = "{% url 'admin_HODmessage_update' id=1234 %}".replace(/1234/, id.toString());
+    }
+
+    update_banner_image = (id) => {
+        window.location.href = "{% url 'admin_banner_image_update' id=1234 %}".replace(/1234/, id.toString());
+    }
+
+</script>
+
+{% endblock %}

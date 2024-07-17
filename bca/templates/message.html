@@ -1,0 +1,28 @@
+<!-- extend base.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+BCA | HOD Message
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-3">
+  {% if hodmessage %}
+  <div class="row">
+    <div class="col-md-5">
+      <p class="text-center">
+        <img src="{{hodmessage.photo.url}}" alt="" style="max-height: 300px;" class="rounded img-fluid">
+      </p>
+    </div>
+    <div class="col-md-7">
+      <p class="lead">
+        {{hodmessage.message}}
+      </p>
+      <p class="text-end lead">
+        <b class="border-top px-3">{{hodmessage.name}}</b>
+      </p>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
