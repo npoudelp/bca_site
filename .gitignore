@@ -1,0 +1,27 @@
+# Django project files
+*.pyc
+*.pyo
+__pycache__/
+*.sqlite3
+
+# Static files
+/static/
+
+# Media files
+/media/
+
+# Environment variables
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# Compiled templates
+*.pyc
+*.pyo
+
+# Ignore migrations
+**/migrations/
+
+/venv/
