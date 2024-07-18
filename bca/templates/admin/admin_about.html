@@ -1,10 +1,83 @@
 <!-- extend base.html -->
 {% extends 'admin/admin_base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %}
-  BCA | About
+Admin | About
 {% endblock %}
 
 {% block body %}
-about
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4">
+      <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if teacher_form %}
+        <p class="text-center lead">Add Teacher</p>
+        {{teacher_form|crispy}}
+        <button type="submit" class="btn btn-dark my-3">Publish</button>
+        {% endif %}
+        {% if teacher_form_edit %}
+        <p class="text-center lead">Update Teacher</p>
+        {{teacher_form_edit|crispy}}
+        <button type="submit" class="btn btn-dark my-3">Update</button>
+        {% endif %}
+      </form>
+    </div>
+    <div class="col-md-8">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Phone, Email</th>
+            <th>CV</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for teacher in teachers %}
+          <tr>
+            <td>
+              {% if teacher.photo %}
+              <a href="{{teacher.photo.url}}" target="_blank" class="text-decoration-none text-dark">
+                <img src="{{teacher.photo.url}}" alt="Photo" style="max-height: 50px;">
+              </a>
+              {% else %}
+              <span class="text-muted">No Image</span>
+              {% endif %}
+            </td>
+            <td>{{teacher.name}}</td>
+            <td>{{teacher.designation}}</td>
+            <td>{{teacher.phone}}, {{teacher.email}}</td>
+            <td>
+            {% if teacher.cv %}
+            <a href="{{teacher.cv.url}}" class="btn btn-dark"><i class="bi bi-book"></i></a>
+            {% endif %}
+            </td>
+            <td>
+              <a href="{% url 'admin_teacher_edit' id=teacher.id %}" class="btn btn-sm btn-outline-dark">
+                <i class="bi bi-pencil"></i>
+              </a>
+              <span onclick="teacher_delete('{{teacher.id}}')" class="btn btn-sm btn-danger">
+                <i class="bi bi-trash"></i>
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  teacher_delete = (id) => {
+    if (confirm('Are you sure to delete?')) {
+      window.location.href = "{% url 'admin_teacher_delete' id=1234 %}".replace('1234', id.toString());
+    }
+  }
+</script>
+
 {% endblock %}

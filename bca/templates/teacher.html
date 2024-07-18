@@ -1,0 +1,37 @@
+<!-- extend base.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+BCA | Teacher
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-3">
+    {% if teacher %}
+    <div class="row">
+        <div class="col-md-4">
+            <p class="text-center">
+                <img src="{{teacher.photo.url}}" class="img-fluid rounded shadow-lg" style="max-height: 300px;" alt=""
+                    srcset="">
+            </p>
+        </div>
+        <div class="col-md-8">
+            <p class="h3 my-0">{{teacher.name}}</p>
+            <p class="my-0 lead"> <i class="bi bi-person-workspace"></i> {{teacher.designation}}</p>
+            <hr class="my-0">
+            {% if teacher.email %}
+            <p class="mt-2 "><i class="bi bi-envelope mx-2"></i>{{teacher.email}}</p>
+            {% endif %}
+            {% if teacher.phone %}
+            <p class="mt-2 "><i class="bi bi-phone mx-2"></i>{{teacher.phone}}</p>
+            {% endif %}
+            {% if teacher.cv %}
+            <p class="my-0 "><i class="bi bi-filetype-pdf mx-2"></i>
+            <a href="{{teacher.cv.url}}" class="text-muted text-decoration-none">CV</a>
+            </p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

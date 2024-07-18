@@ -1,10 +1,67 @@
 <!-- extend base.html -->
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
-  BCA | About
+BCA | About
 {% endblock %}
 
 {% block body %}
-about
+<div class="container py-2">
+  {% if teachers %}
+  <div class="d-flex justify-content-center">
+    <table>
+      <tr>
+        <td><input type="text" placeholder="Search for staff..." name="key" id="key"></td>
+        <td class="">
+          <input type="button" class="mx-2 filter-btn" id="filter" onclick="teacher_filter()" value="Search">
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Designation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for teacher in teachers %}
+      <tr onclick="view_teacher('{{teacher.id}}')">
+        <td>
+          {% if teacher.photo %}
+          <a href="{{teacher.photo.url}}" target="_blank" class="text-decoration-none">
+            <img src="{{ teacher.photo.url }}" alt="Photo" style="max-height: 50px;">
+          </a>
+          {% else %}
+          <span class="text-muted">No Image</span>
+          {% endif %}
+        </td>
+        <td>{{teacher.name}}</td>
+        <td>{{teacher.designation}} <a href="{% url 'teacher_detail' id=teacher.id %}" class="text-decoration-none"><i
+              class="bi bi-arrow-up-right mx-5"></i></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="text-center text-danger">
+    No Teacher Found
+  </p>
+  {% endif %}
+
+</div>
+
+<script>
+  function view_teacher(id) {
+    window.location.href = `/teacher/${id}`;
+  }
+
+  teacher_filter = () => {
+    let key = $("#key").val();
+    window.location.href = "{% url 'teacher_filter' key=1234 %}".replace(/1234/, key.toString());
+  }
+</script>
 {% endblock %}

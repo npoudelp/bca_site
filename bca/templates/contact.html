@@ -7,26 +7,21 @@ BCA | Contact
 
 {% block body %}
 <div class="container p-3">
-  <form action="" method="post">
-    <div class="form-group py-1">
-      <label for="name">Name</label>
-      <input type="text" class="form-control" id="name" placeholder="Enter your name">
-    </div>
-    <div class="form-group py-1">
-      <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" placeholder="Enter your email">
-    </div>
-    <div class="form-group py-1">
-      <label for="message">Message</label>
-      <textarea class="form-control" id="message" rows="3" placeholder="Enter your message"></textarea>
-    </div>
-    <button type="submit" class="btn btn-dark">Send</button>
-  </form>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1992.891271375768!2d87.2749416824341!3d26.44575582142895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2snp!4v1721276835219!5m2!1sen!2snp"
+    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"></iframe>
 
   <div class="row d-flex py-3">
-    <span class="lead"><i class="bi bi-telephone mx-3"></i>+977-021-123123</span><br>
-    <span class="lead"><i class="bi bi-phone mx-3"></i>+977-9812341234</span><br>
-    <span class="lead"><i class="bi bi-envelope mx-3"></i>mail@mail.com</span><br>
+    <span class="my-1 lead"><i class="bi bi-telephone mx-3"></i>
+      <a class="text-decoration-none text-dark" href="tel:++977-021-123123">+977-021-123123</a>
+    </span><br>
+    <span class="my-1 lead"><i class="bi bi-phone mx-3"></i>
+      <a class="text-decoration-none text-dark" href="tel:++977-9812341234">+977-9812341234</a>
+    </span><br>
+    <span class="my-1 lead"><i class="bi bi-envelope mx-3"></i>
+      <a class="text-decoration-none text-dark" target="_blank" href="mailto:mail@mail.com">mail@mail.com</a>
+    </span><br>
   </div>
 </div>
 {% endblock %}

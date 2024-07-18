@@ -2,7 +2,7 @@
 {% extends 'admin/admin_base.html' %}
 {%load crispy_forms_tags%}
 {% block title %}
-BCA | Resource
+Admin | Resource
 {% endblock %}
 
 {% block body %}
@@ -12,11 +12,13 @@ BCA | Resource
       <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% if resource_form %}
+        <p class="text-center lead">Add Resource</p>
         {{resource_form|crispy}}
         <button type="submit" class="btn btn-dark my-3">Publish</button>
         {% endif %}
 
         {% if resource_form_edit %}
+        <p class="text-center lead">Update Resource</p>
         {{resource_form_edit|crispy}}
         <button type="submit" class="btn btn-dark my-3">Update</button>
         {% endif %}

@@ -3,8 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Notice, HODmessage, BannerImage, Resource
-from .forms import NoticeForm, HODmessageForm, BannerImageForm, ResourceForm
+from .models import Notice, HODmessage, BannerImage, Resource, Teacher
+from .forms import NoticeForm, HODmessageForm, BannerImageForm, ResourceForm, TeacherForm
 
 
 # Create your views here.
@@ -75,10 +75,30 @@ def notice(request):
 # for about
 def about(request):
     data = {
+        'teachers': Teacher.objects.all().order_by('id'),
         'request': request,
     }
 
     return render(request, 'about.html', data)
+
+# search teacher
+def search_teacher(request, key):
+    try:
+        teachers = Teacher.objects.filter(name__contains=key).order_by('id')
+        return render(request, 'about.html', {'teachers': teachers, 'request': request})
+    except:
+        messages.error(request, f"Error loading teacher...")
+        return render(request, 'about.html', {'request': request})
+
+
+# get teacher by id
+def get_teacher(request, id):
+    try:
+        teacher = Teacher.objects.get(id=id)
+        return render(request, 'teacher.html', {'teacher': teacher, 'request': request})
+    except:
+        messages.error(request, f"Error loading teacher...")
+        return render(request, 'about.html', {'request': request})
 
 
 # for resource
@@ -90,6 +110,15 @@ def resource(request):
 
     return render(request, 'resource.html', data)
 
+
+# filter resource
+def resource_filter(request, key):
+    try:
+        resources = Resource.objects.filter(title__contains=key).order_by('-id')
+        return render(request, 'resource.html', {'resources': resources, 'request': request})
+    except:
+        messages.error(request, f"Error loading resource...")
+        return render(request, 'resource.html', {'request': request})
 
 # for contact
 def contact(request):
@@ -125,7 +154,7 @@ def login_user(request):
 
 ########################for admin######################
 
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_home(request):
     data = {
         'request': request,
@@ -162,7 +191,7 @@ def admin_home(request):
 
 
 # for admin_notice
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_notice(request):
     if request.method == 'POST':
         notice_data = NoticeForm(request.POST, request.FILES)
@@ -182,17 +211,27 @@ def admin_notice(request):
 
 
 # for admin_about
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_about(request):
     data = {
+        'teacher_form': TeacherForm(),
+        'teachers': Teacher.objects.all().order_by('id'),
         'request': request,
     }
+
+    if request.method == 'POST':
+        teacher_data = TeacherForm(request.POST, request.FILES)
+        if teacher_data.is_valid():
+            teacher_data.save()
+            messages.success(request, f"Teacher added successfully...")
+        else:
+            messages.error(request, f"Error uploading teacher...")
 
     return render(request, 'admin/admin_about.html', data)
 
 
 # for admin_resource
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_resource(request):
     if request.method == 'POST':
         resource_data = ResourceForm(request.POST, request.FILES)
@@ -212,7 +251,7 @@ def admin_resource(request):
 
 
 # for admin_contact
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_contact(request):
     data = {
         'request': request,
@@ -221,7 +260,7 @@ def admin_contact(request):
     return render(request, 'admin/admin_contact.html', data)
 
 
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_notice_delete(request, id):
     try:
         notice = Notice.objects.get(id=id)
@@ -235,7 +274,7 @@ def admin_notice_delete(request, id):
         return redirect('admin_notice')
     
 # edit notice
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_notice_edit(request, id):
     try:
         notice = Notice.objects.get(id=id)
@@ -262,7 +301,7 @@ def admin_notice_edit(request, id):
     
 
 # add HODmessage
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_HODmessage_update(request, id):
     try:
         hodmessage = HODmessage.objects.get(id=id)
@@ -289,7 +328,7 @@ def admin_HODmessage_update(request, id):
     
 
 # admin_banner_image_update
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_banner_image_update(request, id):
     try:
         bannerimage = BannerImage.objects.get(id=id)
@@ -316,7 +355,7 @@ def admin_banner_image_update(request, id):
     
 
 # delete resources
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_resource_delete(request, id):
     try:
         resource = Resource.objects.get(id=id)
@@ -331,7 +370,7 @@ def admin_resource_delete(request, id):
     
 
 #edit resources
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_resource_edit(request, id):
     try:
         resource = Resource.objects.get(id=id)
@@ -358,7 +397,7 @@ def admin_resource_edit(request, id):
     
 
 # filter admin_notice
-@login_required(login_url='login')
+@login_required(login_url='home')
 def admin_notice_filter(request, key):
     try:
         notices = Notice.objects.filter(title__contains=key).order_by('-id')
@@ -376,7 +415,49 @@ def admin_notice_filter(request, key):
     
 
 # for logout
-@login_required(login_url='login')
+@login_required(login_url='home')
 def logout_user(request):
     logout(request)
     return redirect('home')
+
+
+# delete teacher
+@login_required(login_url='home')
+def admin_teacher_delete(request, id):
+    try:
+        teacher = Teacher.objects.get(id=id)
+        teacher.delete()
+        messages.success(request, f"Teacher deleted successfully...")
+
+        return redirect('admin_about')
+    except:
+        messages.error(request, f"Teacher not found...")
+
+        return redirect('admin_about')
+    
+
+#edit teacher
+@login_required(login_url='home')
+def admin_teacher_edit(request, id):
+    try:
+        teacher = Teacher.objects.get(id=id)
+        if request.method == 'POST':
+            teacher_form = TeacherForm(request.POST, request.FILES, instance=teacher)
+
+            if teacher_form.is_valid():
+                teacher_form.save()
+                messages.success(request, f"Teacher updated successfully...")
+
+                return redirect('admin_about')
+
+        data = {
+            'request': request,
+            'teacher_form_edit': TeacherForm(instance=teacher),
+            'teachers': Teacher.objects.all().order_by('id'),
+        }
+
+        return render(request, 'admin/admin_about.html', data)
+    except:
+        messages.error(request, f"Teacher not found")
+
+        return redirect('admin_about')

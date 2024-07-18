@@ -6,8 +6,8 @@ BCA | Notice
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid py-3">
-
+<div class="container-fluid py-2">
+  {% if notices %}
   <div class="d-flex justify-content-center">
     <table>
       <tr>
@@ -46,6 +46,11 @@ BCA | Notice
     </div>
     {% endfor %}
   </div>
+  {% else %}
+  <p class="text-center text-danger">
+    No Notice Found
+  </p>
+  {% endif %}
 
 </div>
 

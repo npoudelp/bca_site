@@ -8,6 +8,17 @@ BCA | Resource
 {% block body %}
 <div class="container py-3">
   {% if resources %}
+  <div class="d-flex justify-content-center">
+    <table>
+      <tr>
+        <td><input type="text" placeholder="Search for resource..." name="key" id="key"></td>
+        <td class="">
+          <input type="button" class="mx-2 filter-btn" id="filter" onclick="resource_filter()" value="Search">
+        </td>
+      </tr>
+    </table>
+  </div>
+
   {% for resource in resources %}
   <div class="bg-light rounded my-4 shadow">
     <div class="row align-items-center p-3">
@@ -39,4 +50,12 @@ BCA | Resource
   </p>
   {% endif %}
 </div>
+
+<script>
+  resource_filter = () => {
+    let key = $("#key").val();
+    window.location.href = "{% url 'resource_filter' key=1234 %}".replace(/1234/, key.toString());
+  }
+</script>
+
 {% endblock %}

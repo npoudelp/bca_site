@@ -24,12 +24,14 @@ Admin | Notice
       <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% if notice_form %}
+        <p class="text-center lead">Add Notice</p>
         {{notice_form|crispy}}
 
         <button type="submit" class="btn btn-dark my-3">Publish</button>
         {% endif %}
 
         {% if notice_form_edit %}
+        <p class="text-center lead">Update Notice</p>
         {{notice_form_edit|crispy}}
 
         <button type="submit" class="btn btn-dark my-3">Update</button>
