@@ -29,7 +29,7 @@ BCA | About
     </thead>
     <tbody>
       {% for teacher in teachers %}
-      <tr onclick="view_teacher('{{teacher.id}}')">
+      <tr>
         <td>
           {% if teacher.photo %}
           <a href="{{teacher.photo.url}}" target="_blank" class="text-decoration-none">
@@ -40,8 +40,9 @@ BCA | About
           {% endif %}
         </td>
         <td>{{teacher.name}}</td>
-        <td>{{teacher.designation}} <a href="{% url 'teacher_detail' id=teacher.id %}" class="text-decoration-none"><i
-              class="bi bi-arrow-up-right mx-5"></i></td>
+        <td>{{teacher.designation}} <a href="{% url 'teacher_detail' id=teacher.id %}" class="text-decoration-none">
+            <i class="bi bi-arrow-up-right mx-5"></i>
+          </a></td>
       </tr>
       {% endfor %}
     </tbody>
@@ -55,10 +56,6 @@ BCA | About
 </div>
 
 <script>
-  function view_teacher(id) {
-    window.location.href = `/teacher/${id}`;
-  }
-
   teacher_filter = () => {
     let key = $("#key").val();
     window.location.href = "{% url 'teacher_filter' key=1234 %}".replace(/1234/, key.toString());
