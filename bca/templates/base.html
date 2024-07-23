@@ -81,6 +81,10 @@
               href="{% url 'resource' %}">Resource</a>
           </li>
           <li class="nav-item mx-3">
+            <a class="nav-link {% if request.path == '/gallary/' %}active{% endif %}"
+              href="{% url 'gallary' %}">Gallery</a>
+          </li>
+          <li class="nav-item mx-3">
             <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}"
               href="{% url 'contact' %}">Contact</a>
           </li>
