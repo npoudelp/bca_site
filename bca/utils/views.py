@@ -3,8 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Notice, HODmessage, BannerImage, Resource, Teacher
-from .forms import NoticeForm, HODmessageForm, BannerImageForm, ResourceForm, TeacherForm
+from .models import Notice, HODmessage, BannerImage, Resource, Teacher, Images
+from .forms import NoticeForm, HODmessageForm, BannerImageForm, ResourceForm, TeacherForm, ImageForm
 
 
 # Create your views here.
@@ -119,6 +119,21 @@ def resource_filter(request, key):
     except:
         messages.error(request, f"Error loading resource...")
         return render(request, 'resource.html', {'request': request})
+    
+
+#gallary
+def gallary(request):
+    try:
+        data = {}
+        try:
+            data['images'] = Images.objects.all().order_by('-id')[31]
+        except:
+            data['images'] = Images.objects.all().order_by('-id')
+            
+        return render(request, 'gallary.html', data)
+    except:
+        return render(request, 'gallary.html')
+
 
 # for contact
 def contact(request):
@@ -461,3 +476,36 @@ def admin_teacher_edit(request, id):
         messages.error(request, f"Teacher not found")
 
         return redirect('admin_about')
+    
+    
+# gallary
+@login_required(login_url='home')
+def admin_gallary(request):
+    try:
+        data = {
+            'image_form':ImageForm,
+            'images':Images.objects.all().order_by('-id')
+        }
+        
+        if request.method == 'POST':
+            image_data = ImageForm(request.POST, request.FILES)
+            
+            if(image_data.is_valid()):
+                messages.success(request, f"Image uploaded successfully... {request.POST.get('image')}")
+                image_data.save()
+                
+            
+        return render(request, 'admin/admin_gallary.html', data)
+    except:
+        return render(request, 'admin/admin_gallary.html', {'image_form':ImageForm})
+    
+
+@login_required(login_url='home')
+def admin_gallary_delete(request, id):
+    try:
+        image = Images.objects.get(id=id)
+        image.delete()
+        messages.error('Image deleted...')
+        # return redirect('admin_gallaary')
+    except:
+        return redirect('admin_gallary')

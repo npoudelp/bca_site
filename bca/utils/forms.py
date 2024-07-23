@@ -1,5 +1,5 @@
 from django import forms
-from .models import Notice, HODmessage, BannerImage, Resource, Teacher
+from .models import Notice, HODmessage, BannerImage, Resource, Teacher, Images
 
 class NoticeForm(forms.ModelForm):
     class Meta:
@@ -29,3 +29,9 @@ class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
         fields = ['name','designation','phone','email','photo','cv']
+        
+
+class ImageForm(forms.ModelForm):
+    class Meta:
+        model = Images
+        fields = ['image', 'image_title']

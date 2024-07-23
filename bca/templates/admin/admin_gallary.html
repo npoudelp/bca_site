@@ -1,0 +1,51 @@
+<!-- extend base.html -->
+{% extends 'admin/admin_base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %}
+Admin | Gallery
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% if image_form %}
+                {{ image_form | crispy }}
+                {% endif %}
+                <input type="submit" class="btn btn-outline-dark my-2" value="Upload">
+            </form>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                {% if images %}
+                {% for image in images %}
+                <div class="col-md-3 py-2">
+                    <img class="img-fluid" src="{{ image.image.url }}" style="max-height: 20vh;" alt="Card image cap">
+                    <br>
+                    <span onclick="image_delete('{{ image.id }}')" class="text-danger">
+                        <i class="bi bi-trash"></i>
+                    </span>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    image_delete = (id) => {
+        if (confirm('Are you sure to delete?')) {
+            window.location.href = "{% url 'gallary_image_delete' id=1234 %}".replace('1234', id.toString());
+        }
+    }
+</script>
+
+{% endblock %}
