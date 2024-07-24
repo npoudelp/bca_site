@@ -6,7 +6,7 @@ import os
 
 from .models import Notice, HODmessage, BannerImage, Resource, Teacher, Images
 from .forms import NoticeForm, HODmessageForm, BannerImageForm, ResourceForm, TeacherForm, ImageForm
-
+from .compress import compress
 
 # Create your views here.
 
@@ -497,6 +497,10 @@ def admin_gallary(request):
                 messages.success(request, f"Image uploaded successfully...")
                 image_data.save()
                 
+                get_laest_image = Images.objects.all().order_by('-id')[0]
+                image_path = get_laest_image.image.path
+                
+                compress(image_path)
             
         return render(request, 'admin/admin_gallary.html', data)
     except:
