@@ -1,4 +1,10 @@
 from django.db import models
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+from io import BytesIO
+from PIL import Image
+import os
+from math import floor, ceil
 
 # Create your models here.
 
@@ -51,7 +57,11 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
     
-    
 class Images(models.Model):
     image = models.ImageField(upload_to='gallary/')
     image_title = models.CharField(max_length=100, null=True, blank=True)
+    
+    def __str__(self):
+        return self.image
+                
+            
