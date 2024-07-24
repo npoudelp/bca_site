@@ -13,7 +13,7 @@ BCA | Gallery
     <div class="row">
         {% if images %}
         {% for image in images %}
-        <div class="col-6 col-lg-3 col-md-4 kala py-2 justify-content-center">
+        <div class="col-6 col-lg-3 col-md-4 py-2 justify-content-center">
             <img decoding="async" class="img-fluid" loading="lazy" src="{{ image.image.url }}" style="max-height: 20vh;" alt="image">
         </div>
         {% endfor %}
