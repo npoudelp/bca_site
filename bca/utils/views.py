@@ -127,7 +127,7 @@ def gallary(request):
     try:
         data = {}
         try:
-            data['images'] = Images.objects.all().order_by('-id')[31]
+            data['images'] = Images.objects.all().order_by('-id')
         except:
             data['images'] = Images.objects.all().order_by('-id')
             
@@ -500,7 +500,7 @@ def admin_gallary(request):
                 get_laest_image = Images.objects.all().order_by('-id')[0]
                 image_path = get_laest_image.image.path
                 
-                compress(image_path)
+                # compress(image_path)
             
         return render(request, 'admin/admin_gallary.html', data)
     except:
