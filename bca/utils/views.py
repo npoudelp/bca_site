@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+import os
 
 from .models import Notice, HODmessage, BannerImage, Resource, Teacher, Images
 from .forms import NoticeForm, HODmessageForm, BannerImageForm, ResourceForm, TeacherForm, ImageForm
@@ -281,7 +282,7 @@ def admin_notice_delete(request, id):
         notice = Notice.objects.get(id=id)
         notice.delete()
         messages.success(request, f"Notice deleted successfully...")
-
+        os.remove(notice.file.path)
         return redirect('admin_notice')
     except:
         messages.error(request, f"Notice not found")
@@ -376,7 +377,7 @@ def admin_resource_delete(request, id):
         resource = Resource.objects.get(id=id)
         resource.delete()
         messages.success(request, f"Resource deleted successfully...")
-
+        os.remove(resource.file.path)
         return redirect('admin_resource')
     except:
         messages.error(request, f"Resource not found")
@@ -442,6 +443,8 @@ def admin_teacher_delete(request, id):
     try:
         teacher = Teacher.objects.get(id=id)
         teacher.delete()
+        os.remove(teacher.photo.path)
+        os.remove(teacher.cv.path)
         messages.success(request, f"Teacher deleted successfully...")
 
         return redirect('admin_about')
@@ -486,12 +489,12 @@ def admin_gallary(request):
             'image_form':ImageForm,
             'images':Images.objects.all().order_by('-id')
         }
-        
+                
         if request.method == 'POST':
             image_data = ImageForm(request.POST, request.FILES)
             
             if(image_data.is_valid()):
-                messages.success(request, f"Image uploaded successfully... {request.POST.get('image')}")
+                messages.success(request, f"Image uploaded successfully...")
                 image_data.save()
                 
             
@@ -505,7 +508,8 @@ def admin_gallary_delete(request, id):
     try:
         image = Images.objects.get(id=id)
         image.delete()
-        messages.error('Image deleted...')
+        os.remove(image.image.path)
+        messages.success('Image deleted...')
         # return redirect('admin_gallaary')
     except:
         return redirect('admin_gallary')
