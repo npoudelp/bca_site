@@ -1,0 +1,37 @@
+<!-- extend base.html -->
+{% extends 'admin/admin_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+Admin | About
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="col-md-12">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- edit -->
+            {% if about_bca_form %}
+            <p class="text-center lead">Add About BCA</p>
+            {{about_bca_form|crispy}}
+            <button type="submit" class="btn btn-dark my-3">Publish</button>
+            {% endif %}
+            {% if about_bca_form_edit %}
+            <p class="text-center lead">Update Section</p>
+            {{about_bca_form_edit|crispy}}
+            <button type="submit" class="btn btn-dark my-3">Update</button>
+            {% endif %}
+        </form>
+    </div>
+
+
+    <script>
+        admin_about_bca_edit = (id) => {
+            if (confirm('Are you sure to update?')) {
+                window.location.href = "{% url 'admin_teacher_delete' id=1234 %}".replace('1234', id.toString());
+            }
+        }
+    </script>
+
+    {% endblock %}
