@@ -1,5 +1,11 @@
 {% load static %}
 
+{% if not request.session.logged %}
+<script>
+  window.location.href = "{% url 'home' %}";
+</script>
+{% endif %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,7 +82,7 @@
           </li>
           <li class="nav-item mx-3">
             <a class="nav-link {% if request.path == '/admin_about/' %}active{% endif %}"
-              href="{% url 'admin_about' %}">About</a>
+              href="{% url 'admin_about' %}">Staff</a>
           </li>
           <li class="nav-item mx-3">
             <a class="nav-link {% if request.path == '/admin_resource/' %}active{% endif %}"
@@ -87,12 +93,15 @@
               href="{% url 'admin_gallary' %}">Gallery</a>
           </li>
           <li class="nav-item mx-3">
+            <a class="nav-link {% if request.path == '/admin_about_bca/' %}active{% endif %}"
+              href="{% url 'admin_about_bca' %}">About</a>
+          </li>
+          <!-- <li class="nav-item mx-3">
             <a class="nav-link {% if request.path == '/admin_contact/' %}active{% endif %}"
               href="{% url 'admin_contact' %}">Contact</a>
-          </li>
+          </li> -->
           <li class="nav-item mx-5">
-            <span onclick="logout_user()"
-              class="btn btn-outline-danger">Logout</span>
+            <span onclick="logout_user()" class="btn btn-outline-danger">Logout</span>
           </li>
         </ul>
       </div>
