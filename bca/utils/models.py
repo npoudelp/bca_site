@@ -58,6 +58,19 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
     
+
+class AboutBca(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(blank=False, null=False)
+    designation = models.CharField(max_length=100, blank=True, null=True)
+    courtesy = models.CharField(max_length=100, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+    
 # compress image
 def compress(image):
     im = Image.open(image)
