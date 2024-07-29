@@ -484,7 +484,7 @@ def admin_teacher_edit(request, id):
 # gallary
 @login_required(login_url='home')
 def admin_gallary(request):
-    try:
+    # try:
         data = {
             'image_form':ImageForm,
             'images':Images.objects.all().order_by('-id')
@@ -494,17 +494,12 @@ def admin_gallary(request):
             image_data = ImageForm(request.POST, request.FILES)
             
             if(image_data.is_valid()):
-                messages.success(request, f"Image uploaded successfully...")
                 image_data.save()
-                
-                get_laest_image = Images.objects.all().order_by('-id')[0]
-                image_path = get_laest_image.image.path
-                
-                # compress(image_path)
+                messages.success(request, f"Image uploaded successfully...")
             
         return render(request, 'admin/admin_gallary.html', data)
-    except:
-        return render(request, 'admin/admin_gallary.html', {'image_form':ImageForm})
+    # except:
+    #     return render(request, 'admin/admin_gallary.html', {'image_form':ImageForm})
     
 
 @login_required(login_url='home')
