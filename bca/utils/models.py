@@ -73,7 +73,8 @@ class AboutBca(models.Model):
     
 # compress image
 def compress(image):
-    im = Image.open(image)
+    img = Image.open(image)
+    im = img.convert('RGB')
     im_io = BytesIO() 
     im.save(im_io, 'JPEG', quality=50) 
     new_image = ContentFile(im_io.getvalue(), image.name)
@@ -87,6 +88,6 @@ class Images(models.Model):
         return self.image
     
     def save(self, *args, **kwargs):
-        if self.image:
+        if self.image and self.image.size > 250 * 1024:
             self.image = compress(self.image)
         super(Images, self).save(*args, **kwargs)
