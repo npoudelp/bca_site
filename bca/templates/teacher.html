@@ -20,14 +20,16 @@ BCA | Teacher
             <p class="my-0 lead"> <i class="bi bi-person-workspace"></i> {{teacher.designation}}</p>
             <hr class="my-0">
             {% if teacher.email %}
-            <p class="mt-2 "><i class="bi bi-envelope mx-2"></i>{{teacher.email}}</p>
+            <p class="mt-2 "><i class="bi bi-envelope mx-2"></i><a href="mailto:teacher.mail"
+                    class="text-decoration-none text-dark">{{teacher.email}}</a></p>
             {% endif %}
             {% if teacher.phone %}
-            <p class="mt-2 "><i class="bi bi-phone mx-2"></i>{{teacher.phone}}</p>
+            <p class="mt-2 "><i class="bi bi-phone mx-2"></i><a class="text-decoration-none text-dark"
+                    href="tel:{{teacher.phone}}">{{teacher.phone}}</a></p>
             {% endif %}
             {% if teacher.cv %}
             <p class="my-0 "><i class="bi bi-filetype-pdf mx-2"></i>
-            <a href="{{teacher.cv.url}}" class="text-muted text-decoration-none">CV</a>
+                <a href="{{teacher.cv.url}}" class="text-muted text-decoration-none">CV</a>
             </p>
             {% endif %}
         </div>
