@@ -74,7 +74,7 @@
               href="{% url 'notice' %}">Notice</a>
           </li>
           <li class="nav-item mx-3">
-            <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="{% url 'about' %}">About</a>
+            <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="{% url 'about' %}">Staff</a>
           </li>
           <li class="nav-item mx-3">
             <a class="nav-link {% if request.path == '/resource/' %}active{% endif %}"
@@ -83,6 +83,10 @@
           <li class="nav-item mx-3">
             <a class="nav-link {% if request.path == '/gallary/' %}active{% endif %}"
               href="{% url 'gallary' %}">Gallery</a>
+          </li>
+          <li class="nav-item mx-3">
+            <a class="nav-link {% if request.path == '/about_bca/' %}active{% endif %}"
+              href="{% url 'about_bca' %}">About</a>
           </li>
           <li class="nav-item mx-3">
             <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}"
