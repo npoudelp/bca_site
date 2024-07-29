@@ -5,6 +5,7 @@ from io import BytesIO
 from PIL import Image
 import os
 from math import floor, ceil
+from django.core.files.base import ContentFile
 
 # Create your models here.
 
@@ -57,11 +58,22 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
     
+# compress image
+def compress(image):
+    im = Image.open(image)
+    im_io = BytesIO() 
+    im.save(im_io, 'JPEG', quality=60) 
+    new_image = ContentFile(im_io.getvalue(), image.name)
+    return new_image
+
 class Images(models.Model):
     image = models.ImageField(upload_to='gallary/')
     image_title = models.CharField(max_length=100, null=True, blank=True)
     
     def __str__(self):
         return self.image
-                
-            
+    
+    def save(self, *args, **kwargs):
+        if self.image:
+            self.image = compress(self.image)
+        super(Images, self).save(*args, **kwargs)
