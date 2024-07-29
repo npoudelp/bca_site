@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 import os
 
-from .models import Notice, HODmessage, BannerImage, Resource, Teacher, Images
-from .forms import NoticeForm, HODmessageForm, BannerImageForm, ResourceForm, TeacherForm, ImageForm
+from .models import Notice, HODmessage, BannerImage, Resource, Teacher, Images, AboutBca
+from .forms import NoticeForm, HODmessageForm, BannerImageForm, ResourceForm, TeacherForm, ImageForm, AboutBcaForm
 from .compress import compress
 
 # Create your views here.
@@ -136,6 +136,25 @@ def gallary(request):
         return render(request, 'gallary.html')
 
 
+# about bca
+def about_bca(request):
+    try:
+        about_bca = None
+        try:
+            about_bca = AboutBca.objects.all().order_by('-id')[0]
+        except:
+            about_bca = None
+        data = {
+            'request': request,
+            'about_bca': about_bca,
+        }
+
+        return render(request, 'about_bca.html', data)
+    except:
+        messages.error(request, f"Error loading about bca...")
+        return render(request, 'about_bca.html', {'request': request})
+
+
 # for contact
 def contact(request):
     data = {
@@ -158,6 +177,9 @@ def login_user(request):
         auth = authenticate(request, username=username, password=password)
 
         if auth is not None:
+            request.session['logged'] = True
+
+
             login(request, auth)
             return redirect('admin')
         else:
@@ -434,6 +456,7 @@ def admin_notice_filter(request, key):
 @login_required(login_url='home')
 def logout_user(request):
     logout(request)
+    request.session.flush()
     return redirect('home')
 
 
@@ -484,7 +507,7 @@ def admin_teacher_edit(request, id):
 # gallary
 @login_required(login_url='home')
 def admin_gallary(request):
-    # try:
+    try:
         data = {
             'image_form':ImageForm,
             'images':Images.objects.all().order_by('-id')
@@ -498,8 +521,8 @@ def admin_gallary(request):
                 messages.success(request, f"Image uploaded successfully...")
             
         return render(request, 'admin/admin_gallary.html', data)
-    # except:
-    #     return render(request, 'admin/admin_gallary.html', {'image_form':ImageForm})
+    except:
+        return render(request, 'admin/admin_gallary.html', {'image_form':ImageForm})
     
 
 @login_required(login_url='home')
@@ -512,3 +535,44 @@ def admin_gallary_delete(request, id):
         # return redirect('admin_gallaary')
     except:
         return redirect('admin_gallary')
+    
+
+@login_required(login_url='home')
+def admin_about_bca(request):
+    data = {
+        request: request,
+    }
+    id = None
+    try:
+        try:
+            get_about_bca = AboutBca.objects.all().order_by('-id')[0]
+            id = get_about_bca.id
+            update_about_bca = AboutBcaForm(instance=get_about_bca)
+            data['about_bca_form_edit'] = update_about_bca
+        except:
+            data['about_bca_form'] = AboutBcaForm()
+        
+        if request.method == 'POST':
+            if id is not None:
+                about_bca = AboutBca.objects.get(id=id)
+                about_bca_form = AboutBcaForm(request.POST, instance=about_bca)
+                if about_bca_form.is_valid():
+                    about_bca_form.save()
+                    messages.success(request, f"About bca updated successfully...")
+                    return redirect('admin_about_bca')
+                else:
+                    messages.error(request, f"Error uploading about bca...")
+
+            about_bca = AboutBcaForm(request.POST)
+            if about_bca.is_valid():
+                about_bca.save()
+                messages.success(request, f"About bca added successfully...")
+                return redirect('admin_about_bca')
+            else:
+                messages.error(request, f"Error uploading about bca...")
+
+        return render(request, 'admin/admin_about_bca.html', data)
+    except:
+        messages.error(request, f"Error loading about bca...")
+        return render(request, 'admin/admin_about_bca.html')
+    
