@@ -1,0 +1,47 @@
+<!-- extend base.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+BCA | About
+{% endblock %}
+
+{% block body %}
+<div class="container py-2">
+    {% if about_bca %}
+    {% if about_bca.title %}
+    <p class="text-center h3 border-bottom">
+        {{ about_bca.title }}
+    </p>
+    {% endif %}
+    <p class="text-center lead">
+        {{ about_bca.description }}
+    </p>
+    {% if about_bca.courtesy %}
+    <p class="text-end h5 my-0">
+        <span class="px-3 border-top px-3">
+            {{ about_bca.courtesy }}
+        </span>
+    </p>
+    {% endif %}
+    {% if about_bca.designation %}
+    <p class="text-end my-0">
+        <span class="px-3">
+            {{ about_bca.designation }}
+        </span>
+    </p>
+    {% endif %}
+    {% else %}
+    <p class="text-center text-danger">
+        No data found
+    </p>
+    {% endif %}
+
+</div>
+
+<script>
+    teacher_filter = () => {
+        let key = $("#key").val();
+        window.location.href = "{% url 'teacher_filter' key=1234 %}".replace(/1234/, key.toString());
+    }
+</script>
+{% endblock %}
